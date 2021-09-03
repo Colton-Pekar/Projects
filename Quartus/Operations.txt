@@ -1,0 +1,107 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity reaction_timer is
+	  port( CLK: in std_logic;
+			start: in std_logic;
+			react: in std_logic;
+			reset: in std_logic;
+			
+			Output3,Output2,Output1,Output0,memory:out integer;
+			done: out std_logic);
+			
+end reaction_timer;
+
+architecture operations of reaction_timer is
+
+type state_type is (S0, S1, S2, S3);
+type memory_array is array (29 downto 0) of integer;
+signal state : state_type := S0;	-- state initialized to state 0
+signal new_state : std_logic_vector(1 downto 0);
+signal memory1 : memory_array :=(1,2,7,2,9,4,2,5,9,5,7,2,9,7,8,9,4,3,1,9,4,2,4,7,9,4,8,1,2,7); --memory module
+signal memory_pointer : integer; --memmory index initialzed to begining
+signal delay_time,hold: integer; --initialize delay time
+signal reaction_time: integer;
+signal reaction_flag : std_logic;
+begin
+
+		
+process(CLK, reset) -- clk_toggle is the 1ms clock
+
+begin
+
+		
+
+if(reset = '1') then
+		new_state <= "00";
+		Output0<= 0;
+		Output1<= 0;
+		Output2<= 0;
+		Output3<= 0;
+
+elsif(CLK' event and CLK = '1' ) then
+
+	if(new_state = "00")then
+		memory <= memory1(0);
+		memory_pointer <= 0;
+		reaction_flag <= '0';
+		delay_time <= 0;
+			if (start = '0')then 
+				reaction_time <= 0;
+				done <= '0';
+				new_state <= "01";
+			end if;
+			
+	elsif (new_state = "01") then
+		new_state<= "10";
+		memory <= memory1(memory_pointer);
+		
+	elsif (new_state = "10") then
+		if(react = '0' and memory1(memory_pointer) = 9 and reaction_flag = '0') then
+				reaction_time <= (reaction_time + delay_time);
+				reaction_flag <= '1';
+				state <= S2;
+				Output0<= delay_time mod 10;
+				Output1<= ((delay_time/10) mod 10);
+				Output2<= ((delay_time/100)mod 10);
+				Output3<= ((delay_time/1000)mod 10);
+		else
+			
+			if (delay_time < 1000) then
+				new_state <= "10";
+				delay_time <= delay_time + 1;
+				hold <= delay_time;
+			elsif(delay_time=1000 and memory1(memory_pointer) = 9 and reaction_flag = '0')then
+				reaction_time <= (reaction_time + delay_time);
+				new_state <= "11";
+			else
+				new_state <= "11";
+			end if;
+		end if;
+
+			--if ( memory1(memory_pointer)=9 and reaction_flag = '0')then
+				--	reaction_time <= reaction_time + delay_time;
+			--end if;
+			
+			
+	else
+		if(memory_pointer=29)then
+			Output0<= ((reaction_time/6) mod 10);
+			Output1<= (((reaction_time)/60) mod 10);
+			Output2<= (((reaction_time)/600)mod 10);
+			Output3<= (((reaction_time)/6000)mod 10);
+			done <= '1';
+			new_state <= "00";
+		else
+			new_state <= "01";
+			delay_time <= 0;
+			reaction_flag <= '0';
+			memory_pointer <= memory_pointer +1;
+		end if;
+		
+	end if;
+
+end if;
+end process;
+
+end operations;
