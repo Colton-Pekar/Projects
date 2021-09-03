@@ -1,0 +1,614 @@
+#include <IRremote.h>
+#include <LiquidCrystal.h>
+int password;
+int value =0;
+int hold = 0;
+int amount =0;
+int amt0,amt1,amt2,amt3,amt4 = 0;
+int acnt1,acnt2,acnt3,acnt4,acnt5,acnt6 =0;
+int account =0;
+int pw0,pw1,pw2;
+int Withdrawal, Deposit = 0;
+int pw;
+int enter = 0;
+int totalamt;
+int inputpw;
+int Contrast=130;
+const int RECV_PIN = 10;
+LiquidCrystal lcd(12, 11, 5, 4, 3, 7);
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+unsigned long key_value = 0;
+
+void setup(){
+  Serial.begin(9600);
+  irrecv.enableIRIn(); 
+  irrecv.blink13(true);
+  analogWrite(6,Contrast);
+  lcd.begin(16, 2);
+}
+
+void loop(){
+begining: 
+   clr();
+    hold =0;
+    value =0;
+    inputpw=0;
+    amount =0;
+    account =0;
+    pw =0;
+    amt0,amt1,amt2,amt3,amt4 =0;
+    lcd.print("Hello");
+    delay(4000);
+  while(hold ==0){
+        lcd.setCursor(0, 0);
+        lcd.print("What is your");
+        lcd.setCursor(0, 1);
+        lcd.print("account number:");
+        remote();
+    if(value!=0){
+        hold +=1;
+    }
+  }
+  hold =0;
+  clr();
+   lcd.setCursor(0, 0);
+   lcd.print("Account number");
+  
+   lcd.print(value);
+   account = value;
+  pw = (100*value)+(10*value)+value;
+  delay(2000);
+  
+  clr();
+   lcd.setCursor(0, 0);
+   lcd.print("What is the");
+   lcd.setCursor(0, 1);
+   lcd.print("3-digit Password");
+ delay(2000);
+
+    clr();
+    value =0;
+    inputpw=0;
+    lcd.print("password: ");
+    lcd.print(inputpw);
+  
+  while(hold<3){
+    inputpw = 0;
+      while(hold ==0){
+        remote();
+       if(value!=0){
+          hold +=1;
+          inputpw = value*1;
+          lcd.print("password: ");
+         lcd.print(inputpw);
+          delay(1000);
+    }
+  }
+  value = 0;
+  
+  while(hold ==1){
+        remote();
+    if(value!=0){
+        hold +=1;
+        inputpw += 10*value;
+        lcd.print("password: ");
+         lcd.print(inputpw);
+          delay(1000);
+    }
+    
+  }
+  value = 0;
+  
+  while(hold ==2){
+        remote();
+    if(value!=0){
+        hold +=1;
+        inputpw += value*100;
+        lcd.print("password: ");
+         lcd.print(inputpw);
+          delay(1000);
+    }
+  }
+    value = 0;
+  if(inputpw != pw){
+    clr();
+    hold = 0;
+    lcd.print("Wrong Password");
+    delay(1000);
+    goto begining;
+  }
+  clr();
+  }
+  lcd.print("Correct Password");
+  delay(1000);
+  clr();
+  hold = 0;
+
+switch(account)
+  {
+
+  case 1:
+         lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt1);
+         delay(3000);
+         clr();
+   break;
+
+
+   case 2:
+        lcd.setCursor(0, 0);
+        lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt2);
+         delay(3000);
+         clr();
+   break;
+
+   case 3:
+         lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt3);
+         delay(3000);
+         clr();
+   break;
+
+
+   case 4:
+         lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt4);
+         delay(3000);
+         clr();
+   break;
+
+
+   case 5:
+         lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt5);
+         delay(3000);
+         clr();
+   break;
+
+   case 6:
+    lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt6);
+         delay(3000);
+         clr();
+   break;
+
+  }
+   
+  while(hold == 0){
+          lcd.setCursor(0, 0);
+         lcd.print("Withdrawal(1) or");
+         lcd.setCursor(0, 1);
+         lcd.print("Deposit(2)");
+        remote();
+    if(value!=0){
+        hold +=1;
+        clr();
+        if (value == 1){
+         lcd.setCursor(0, 0);
+         lcd.print("You chose");
+         lcd.setCursor(0, 1);
+         lcd.print("Withdrawal");
+         Withdrawal = 1;
+         Deposit =0;
+         delay(4000);
+    }
+        else if(value == 2){
+          lcd.setCursor(0, 0);
+         lcd.print("You chose");
+         lcd.setCursor(0, 1);
+         lcd.print("Deposit");
+         Deposit = 1;
+         Withdrawal =0;
+         delay(4000);
+        }
+        else{
+         lcd.print("Error");
+          value = 0;
+          hold = 0;
+          delay(4000);
+        }
+  }
+    }
+      clr();
+      hold =0;
+      value =0;
+      amt0,amt1,amt2,amt3,amt4=0;
+      amount =0;
+      
+  if(Deposit == 1){
+    
+          lcd.setCursor(0, 0);
+         lcd.print("Enter amount you");
+         lcd.setCursor(0, 1);
+         lcd.print("want to deposit");
+         delay(2000);
+         clr();
+         value =0;
+      while(hold <5){
+         
+         remote();
+         if ( value!=0){
+          if(hold ==0){
+            hold +=1;
+            amt0 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value =0;
+         }
+          else if (hold ==1){
+             hold +=1;
+            amt1 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value =0;
+          }
+          else if (hold ==2){
+             hold +=1;
+            amt2 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value=0;
+          }
+          else if (hold ==3){
+             hold +=1;
+            amt3 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value=0;
+          }
+          else if (hold ==4){
+             hold +=1;
+            amt4 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value =0;
+          }
+      }
+      
+      
+  }
+             clr();
+             lcd.setCursor(0, 0);
+             lcd.print("You want to");
+             lcd.setCursor(0, 1);
+             lcd.print("Deposit: $");
+             lcd.print(amount);
+             delay(3000);
+      clr();
+      hold =0;
+      value =0;
+  }
+      
+  if(Withdrawal == 1){
+    
+          lcd.setCursor(0, 0);
+         lcd.print("Enter amount you");
+         lcd.setCursor(0, 1);
+         lcd.print("want to withdrawal");
+         delay(2000);
+         clr();
+         value =0;
+      while(hold <5){
+         
+         remote();
+         if ( value!=0){
+          if(hold ==0){
+            hold +=1;
+            amt0 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value =0;
+         }
+          else if (hold ==1){
+             hold +=1;
+            amt1 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value =0;
+          }
+          else if (hold ==2){
+             hold +=1;
+            amt2 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value=0;
+          }
+          else if (hold ==3){
+             hold +=1;
+            amt3 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value=0;
+          }
+          else if (hold ==4){
+             hold +=1;
+            amt4 = value;
+            amount = (amt4*10000)+(amt3*1000)+(amt2*100)+(amt1*10)+amt0;
+      lcd.print("amount = $");
+      lcd.print(amount);
+      value =0;
+          }
+      }
+      
+      
+  }
+             clr();
+             lcd.setCursor(0, 0);
+             lcd.print("You want to");
+             lcd.setCursor(0, 1);
+             lcd.print("Withdrawal: $");
+             lcd.print(amount);
+             delay(3000);
+      clr();
+      hold =0;
+      value =0;
+  }
+  
+
+  switch(account)
+  {
+
+  case 1:
+  if(Withdrawal == 1){
+    acnt1 -= amount;
+  }
+
+  if(Deposit == 1){
+    acnt1 += amount;
+  }
+    lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt1);
+         delay(3000);
+         clr();
+
+   break;
+
+
+   case 2:
+  if(Withdrawal == 1){
+    acnt2 -= amount;
+  }
+
+  if(Deposit == 1){
+    acnt2 += amount;
+  }
+    lcd.setCursor(0, 0);
+        lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt2);
+         delay(3000);
+         clr();
+
+   break;
+
+   case 3:
+  if(Withdrawal == 1){
+    acnt3 -= amount;
+  }
+
+  if(Deposit == 1){
+    acnt3 += amount;
+  }
+    lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt3);
+         delay(3000);
+         clr();
+
+   break;
+
+
+   case 4:
+  if(Withdrawal == 1){
+    acnt4 -= amount;
+  }
+
+  if(Deposit == 1){
+    acnt4 += amount;
+  }
+    lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt4);
+         delay(3000);
+         clr();
+
+   break;
+
+
+   case 5:
+  if(Withdrawal == 1){
+    acnt5 -= amount;
+  }
+
+  if(Deposit == 1){
+    acnt5 +=amount;
+  }
+    lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt5);
+         delay(3000);
+         clr();
+
+   break;
+
+   case 6:
+  if(Withdrawal == 1){
+    acnt6 -= amount;
+  }
+
+  if(Deposit == 1){
+    acnt6 += amount;
+  }
+    lcd.setCursor(0, 0);
+         lcd.print("Account ");
+         lcd.print(account);
+         lcd.print(" balance");
+         lcd.setCursor(0, 1);
+         lcd.print("is ");
+         lcd.print(acnt6);
+         delay(3000);
+         clr();
+
+   break;
+
+  }
+}
+  
+
+
+void remote(){
+  if (irrecv.decode(&results)){
+        Serial.println(results.value,HEX);
+        if (results.value == 0XFFFFFFFF)
+        results.value = key_value;
+        lcd.setCursor(0, 0);
+        lcd.clear();
+        
+        switch(results.value){
+          case 0xFFA25D:          
+          
+          break;
+          case 0xFF629D:
+         
+          break;
+          case 0xFFE21D:
+          
+          break;
+          case 0xFF22DD:
+          
+          break;
+          case 0xFFC23D:
+          enter = 1;
+          break ;  
+          case 0xFF02FD:
+         
+          break ;               
+          case 0xFFE01F:
+         
+          break ;  
+          case 0xFFA857:
+          
+          break ;  
+          case 0xFF906F:
+         
+          break ;  
+          case 0xFF6897:
+          
+          break ;  
+          case 0xFF9867:
+          
+          break ;
+          case 0xFFB04F:
+
+         value =0;
+          break ;
+          case 0xFF30CF:
+         
+          value = 1;
+          break ;
+          case 0xFF18E7:
+          
+          value=2;
+          break ;
+          case 0xFF7A85:
+        
+          value =3;
+          break ;
+          case 0xFF10EF:
+        
+          value =4;
+          break ;
+          case 0xFF38C7:
+        
+          value = 5;
+          break ;
+          case 0xFF5AA5:
+        
+          value = 6;
+          break ;
+          case 0xFF42BD:
+          //7
+          value = 7;
+          break ;
+          case 0xFF4AB5:
+         //8
+         value = 8;
+          break ;
+          case 0xFF52AD:
+       //9
+       value = 9;
+          break ;                   
+        }
+        key_value = results.value;
+        irrecv.resume(); 
+}
+}
+
+void clr(){
+     lcd.setCursor(0, 0);
+    lcd.clear();
+    lcd.setCursor(0, 1);
+    lcd.clear();
+}
+
+
