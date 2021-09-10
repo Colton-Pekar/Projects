@@ -58,19 +58,31 @@ map <int, struct customerInfo> createAccount(int &nextIndex){
     cout << "what is your name" << endl, cin >> newcustomer.name;
     cout << "how old are you" << endl, cin >> newcustomer.age;
     cout << "what is your birthday" << endl, cin >> newcustomer.birthday;
-    cout << "how old are you" << endl, cin >> newcustomer.job;
+    cout << "what is your new job?" << endl, cin >> newcustomer.job;
 
     TD.CustomerList = TD.newCustomer(newcustomer, nextIndex);
     nextIndex++;
-
-    for(auto elem : TD.CustomerList)
-        {
-        std::cout << elem.first << " " << elem.second.name << " " << elem.second.bankID << "\n";
-        }
     return TD.CustomerList;
 }
 
-
+map <int, struct customerInfo> modifyInformation(int customerKey){
+    customerInfo tempCustomer;
+    tempCustomer = TD.CustomerList.at(customerKey);
+    bool save = false;
+    //use temp for edits incase you discard
+    cout << "what is your new name? " << endl, cin >> tempCustomer.name;
+    cout << "what is your new  age? " << endl, cin >> tempCustomer.age;
+    cout << "what is your new birthday? " << endl, cin >> tempCustomer.birthday;
+    cout << "what is your new job? " << endl, cin >> tempCustomer.job;
+    cout << "Press '1' to save these changes, press '0' to discard " << endl, cin >> save
+    //store temp to database
+    if save == true{
+        TD.CustomerList.at(customerKey) = tempCustomer;
+        return;
+    }
+    else{
+        return;
+    }
 };
 
 int main(){
@@ -92,8 +104,23 @@ int main(){
         case 1: //create account
             TD.CustomerList = TD.createAccount(nextIndex);
             cout << nextIndex;
+            //print each element of updated customer list
+            for(auto elem : TD.CustomerList{
+                std::cout << elem.first << " " << elem.second.name << " " << elem.second.bankID << "\n";
+            }
             break;
-        
+                        
+        case 2: //update customer information
+            int key = 0;
+            cout << "hi there, what is your database key? " << endl, cin >> key;
+            TD.CustomerList = TD.modifyInformation(key);
+            //print each element of updated customer list
+            for(auto elem : TD.CustomerList{
+                std::cout << elem.first << " " << elem.second.name << " " << elem.second.bankID << "\n";
+            }
+            break;
+                
+        case 3:
         default:
             break;
         }
