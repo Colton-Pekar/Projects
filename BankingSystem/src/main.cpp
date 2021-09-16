@@ -31,7 +31,7 @@ class bankStructure{
 
     int ModeSelection(int mode){
         cout << "hi, welcome to TD." << endl << "Please select from the following: " << endl;
-        cout << "1) create account" << endl << "2) update information of an existing account" << endl << "3) view/manage transactions" << endl;
+        cout << "1) create account" << endl << "2) update information of an existing account" << endl << "3) Make an account transaction" << endl;
         cout << "4) check the details of an existing account" << endl << "5) remove existing account" << endl << "6) view customer list" << endl;
         cin >> mode;
         return mode;
@@ -83,6 +83,9 @@ map <int, struct customerInfo> modifyInformation(int customerKey){
     else{
         return;
     }
+}
+        
+
 };
 
 int main(){
@@ -120,7 +123,8 @@ int main(){
             }
             break;
                 
-        case 3:
+        case 3: //Make an account transaction
+                
         default:
             break;
         }
