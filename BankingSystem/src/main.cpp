@@ -74,9 +74,9 @@ map <int, struct customerInfo> modifyInformation(int customerKey){
     cout << "what is your new  age? " << endl, cin >> tempCustomer.age;
     cout << "what is your new birthday? " << endl, cin >> tempCustomer.birthday;
     cout << "what is your new job? " << endl, cin >> tempCustomer.job;
-    cout << "Press '1' to save these changes, press '0' to discard " << endl, cin >> save
+    cout << "Press '1' to save these changes, press '0' to discard " << endl, cin >> save;
     //store temp to database
-    if save == true{
+    if (save == true){
         TD.CustomerList.at(customerKey) = tempCustomer;
         return;
     }
@@ -108,7 +108,7 @@ int main(){
             TD.CustomerList = TD.createAccount(nextIndex);
             cout << nextIndex;
             //print each element of updated customer list
-            for(auto elem : TD.CustomerList{
+            for(auto elem : TD.CustomerList){
                 std::cout << elem.first << " " << elem.second.name << " " << elem.second.bankID << "\n";
             }
             break;
@@ -118,7 +118,7 @@ int main(){
             cout << "hi there, what is your database key? " << endl, cin >> key;
             TD.CustomerList = TD.modifyInformation(key);
             //print each element of updated customer list
-            for(auto elem : TD.CustomerList{
+            for(auto elem : TD.CustomerList){
                 std::cout << elem.first << " " << elem.second.name << " " << elem.second.bankID << "\n";
             }
             break;
